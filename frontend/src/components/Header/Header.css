@@ -1,0 +1,14 @@
+.Header {
+  background: #2b3e80 !important; /* Override material-ui style */
+  z-index: 1400 !important;
+}
+
+.Header a:link {
+  text-decoration: none;
+  color: white;
+}
+
+.Header a:visited {
+  text-decoration: none;
+  color: white;
+}

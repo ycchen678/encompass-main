@@ -1,0 +1,33 @@
+@import "../../index.css";
+
+.CensusAnalytics .p {
+    margin-top: 2px;
+  }
+
+.CensusAnalytics .DownloadLink {
+  height: 36px;
+  padding-top: 10px;
+}
+
+.CensusAnalytics .DownloadAnalysisLink {
+  position: absolute !important; /* override material-ui inline style */
+    right: 20px;
+}
+
+.CircularProgress {
+  margin-bottom: 20px;
+}
+
+.CensusAnalytics .CensusDataChart {
+  margin-bottom: 10px;
+}
+
+.CensusAnalytics .HighLevelStats {
+  margin-bottom: 15px;
+}
+
+.TableHelpText {
+  font-size: var(--small-font-size);
+  color: var(--light);
+  font-style: italic;
+}

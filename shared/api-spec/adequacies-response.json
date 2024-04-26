@@ -1,0 +1,34 @@
+{
+  "title": "POSTAdequaciesResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Response shape for POST /api/adequacies/",
+  "type": "array",
+  "items": {
+    "properties": {
+      "id": {
+        "type": "integer"
+      },
+      "to_closest_provider": {
+        "description": "Measure (in meters or minutes) to the closest provider",
+        "type": "integer"
+      },
+      "closest_providers": {
+        "type": "array",
+        "items": {
+          "type": "integer"
+        }
+      },
+      "closest_location":{
+          "properties": {
+            "latitude": {"type": "number"},
+            "longitude": {"type": "number"}
+          },
+          "additionalProperties": false,
+          "required": ["latitude", "longitude"]
+        }
+    },
+    "additionalProperties": false,
+    "required": ["id", "to_closest_provider", "closest_providers", "closest_location"]
+  },
+  "additionalProperties": false
+}

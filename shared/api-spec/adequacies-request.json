@@ -1,0 +1,44 @@
+{
+  "title": "POSTAdequaciesRequest",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Request shape for POST /api/adequacies/",
+  "type": "object",
+  "properties": {
+    "method": {
+      "description": "Method used to calculate times and distances",
+      "enum": ["driving_time", "straight_line", "walking_time"]
+    },
+    "providers": {
+      "type": "array",
+      "items": {
+        "properties": {
+          "id": {
+            "description": "An arbitrary ID that is locally unique within this request",
+            "type": "integer"
+          },
+          "latitude": {
+            "type": "number"
+          },
+          "longitude": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "required": ["id", "latitude", "longitude"]
+      }
+    },
+    "service_area_ids": {
+      "description": "Service area IDs in the format \"state_city_zip\".\nFor example, [\"ca_san_francisco_94014\", \"ca_san_francisco_94015\"]",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dataset_hint": {
+      "description": "Hint to help the backend use cached adequacy results.",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": ["method", "providers", "service_area_ids"]
+}

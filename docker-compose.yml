@@ -1,0 +1,84 @@
+version: "2"
+
+volumes:
+  postgres-data:
+    driver: local
+
+services:
+
+    backend:
+      build:
+        context: ./backend
+        dockerfile: Dockerfile
+      volumes:
+        # App files and config
+        - ./backend/config/uwsgi.ini:/etc/uwsgi/uwsgi.ini:ro
+        - ./backend/config/nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
+        - ./backend/app/main.py:/app/main.py:ro
+        # Cache
+        - ./.cache/:/app/cache:rw
+        # Library
+        - ./backend:/usr/local/lib/python3.6/site-packages/backend:ro
+        # Data
+        - ./data/:/app/data/:rw
+        - ./shared/:/app/shared:rw
+        # Runners
+        - ./backend/runners/:/app/runners:ro
+        # Linters and Tests
+        - ./backend/tests/:/app/tests:ro
+        - ./backend/.flake8:/app/.flake8:ro
+        - ./backend/.coveragerc:/app/.coveragerc:ro
+        - ./backend/lib/:/app/lib:ro
+        # Entrypoint
+        - ./backend/config/entrypoint.sh:/entrypoint.sh:ro
+      env_file:
+        - .env
+      ports:
+        - 8080:8080
+
+    frontend:
+      volumes:
+        - ./frontend/src:/usr/src/app/src:rw
+        - ./frontend/public:/usr/src/app/public:rw
+        - ./shared:/usr/src/app/src/shared:ro
+        - ./shared:/usr/src/shared:ro
+      build:
+        args:
+          - GA_ID
+          - MAPBOX_TOKEN
+        context: .
+        dockerfile: ./frontend/Dockerfile
+      ports:
+        - 8081:8081
+      env_file:
+        - .env
+
+    osrm:
+      build:
+        context: ./osrm
+        dockerfile: Dockerfile
+      image: osrm
+      volumes:
+        - ./data/:/opt/data/:rw
+        - ./osrm:/osrm/:ro
+      command: sh -c "/osrm/initialize.py"
+      ports:
+        - 80:5000
+
+    explorer:
+      build:
+        context: .
+        dockerfile: ./explorer/Dockerfile
+      volumes:
+        - ./backend:/home/jovyan/work/backend:ro
+        - ./shared:/app/shared:ro
+        - ./explorer:/home/jovyan/work:rw
+        - ./data/:/home/jovyan/work/data/:rw
+        - ./frontend/src:/usr/src/app/src:rw
+      env_file:
+        - .env
+      command: bash -c "start-notebook.sh --NotebookApp.token=''"
+      ports:
+        - 8888:8888
+      environment:
+        - PYTHONPATH=/home/jovyan/work

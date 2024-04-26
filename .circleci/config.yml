@@ -1,0 +1,143 @@
+version: 2
+
+jobs:
+    build_backend:
+        machine:
+            docker_layer_caching: true
+        steps:
+            - checkout
+            - run:
+                name: Install Docker Compose
+                command: |
+                    curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+                    chmod +x ~/docker-compose
+                    sudo mv ~/docker-compose /usr/local/bin/docker-compose
+            - run:
+                name: Create env file
+                command: |
+                  touch .env
+                  echo 'POSTGRES_URL=postgres://postgres:example@db.local:5432/network_adequacy' >> .env
+                  echo 'POSTGRES_URL_POSTGRES=postgres://postgres:example@db.local:5432/postgres' >> .env
+                  echo "GEOCODIO_KEY=$GEOCODIO_KEY" >> .env
+
+            - run:
+                name: Build containers
+                command: |
+                    docker-compose -f docker-compose.yml -f docker-compose.override.db.yml build backend
+            - run:
+                name: Run linters
+                command: |
+                    make backend-lint
+            - run:
+                name: Run tests
+                command: |
+                    make backend-coverage-ci
+
+    build_frontend:
+        machine:
+            docker_layer_caching: true
+        steps:
+            - checkout
+            - run:
+                name: Install Docker Compose
+                command: |
+                    curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+                    chmod +x ~/docker-compose
+                    sudo mv ~/docker-compose /usr/local/bin/docker-compose
+            - run:
+                name: Create env file
+                command: |
+                  touch .env
+            - run:
+                name: Build containers
+                command: 'docker-compose build frontend'
+            - run:
+                name: Run tests
+                command: |
+                    make frontend-test
+
+    deploy-qa:
+        machine:
+            docker_layer_caching: true
+        steps:
+            - run:
+                name: Perform update over SSH
+                command: |
+                    ssh ec2-user@$QA_DNS '
+                        cd tds
+                        docker-compose down
+                        # sudo rm .cache/*
+                        git fetch origin
+                        git checkout .
+                        git checkout deploy-qa
+                        git pull origin deploy-qa
+                        docker-compose -f docker-compose.yml -f docker-compose.override.db.yml build --no-cache backend frontend;
+                        docker-compose -f docker-compose.yml -f docker-compose.remote.yml up -d backend frontend
+                    '
+    deploy-demo:
+        machine:
+            docker_layer_caching: true
+        steps:
+            - run:
+                name: Perform update over SSH
+                command: |
+                    ssh ec2-user@$DEMO_DNS '
+                        cd tds
+                        docker-compose down
+                        # sudo rm .cache/*
+                        git fetch origin
+                        git checkout .
+                        git checkout deploy-demo
+                        git pull origin deploy-demo
+                        docker-compose -f docker-compose.yml -f docker-compose.override.db.yml build --no-cache backend frontend;
+                        docker-compose -f docker-compose.yml -f docker-compose.remote.yml up -d backend frontend
+                    '
+
+workflows:
+    version: 2
+    build:
+        jobs:  # TODO figure out why `ignore` doesn't work.
+            - build_backend:
+                filters:
+                    branches:
+                        ignore: /deploy-/
+            - build_frontend:
+                filters:
+                    branches:
+                        ignore: /deploy-/
+
+    build-deploy-qa:
+        jobs:
+            - build_backend:
+                filters:
+                    branches:
+                        only: deploy-qa
+            - build_frontend:
+                filters:
+                    branches:
+                        only: deploy-qa
+            - deploy-qa:
+                requires:
+                    - build_backend
+                    - build_frontend
+                filters:
+                    branches:
+                        only: deploy-qa
+
+    build-deploy-demo:
+        jobs:
+            - build_backend:
+                filters:
+                    branches:
+                        only: deploy-demo
+            - build_frontend:
+                filters:
+                    branches:
+                        only: deploy-demo
+            - deploy-demo:
+                requires:
+                    - build_backend
+                    - build_frontend
+                filters:
+                    branches:
+                        only: deploy-demo

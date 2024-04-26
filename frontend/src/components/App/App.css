@@ -1,0 +1,214 @@
+@import "../../index.css";
+
+/*
+  CSS Reset
+*/
+
+* {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+  Global
+*/
+
+body {
+  font: 400 var(--medium-font-size)/var(--medium-font-line) Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, sans-serif;
+}
+
+html, body, #App, .App {
+  height: 100%;
+  width: 100%;
+}
+
+h2 {
+  font-size: var(--large-font-size);
+  font-weight: var(--heavy-weight);
+  line-height: var(--large-font-line);
+  text-transform: uppercase;
+}
+
+h4 {
+  font-size: var(--mediumlarge-font-size);
+  font-weight: var(--heavy-weight);
+}
+
+hr {
+  border-top: 1px solid var(--verylight);
+}
+
+p {
+  padding: 12px 0;
+  font-size: var(--medium-font-size) !important;
+}
+
+a {
+  color: var(--secondary);
+  text-decoration: underline;
+}
+
+/*
+  Utilities
+*/
+
+.Ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.Flex {
+  align-content: center;
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.Flex.-SpaceBetween {
+  justify-content: space-between;
+}
+
+.Flex.-Row > * {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.Flex > .-Flex-0 {
+  flex: 0;
+}
+
+.Flex.-Center {
+  justify-content: center
+}
+
+.Muted, .Muted > * {
+  color: var(--muted);
+}
+
+.Secondary, .Secondary > * {
+  color: var(--secondary);
+}
+
+.MediumWeight {
+  font-weight: var(--medium-weight);
+}
+
+.HeavyWeight {
+  font-weight: var(--heavy-weight);
+}
+
+.Center {
+  text-align: center;
+}
+
+.PullRight {
+  float: right;
+}
+
+.PullLeft {
+  float: left;
+}
+
+.SmallFont {
+  font-size: var(--small-font-size);
+}
+
+.MediumFont {
+  font-size: var(--medium-font-size);
+}
+
+.MediumLargeFont {
+  font-size: var(--mediumlarge-font-size);
+}
+
+.LargeFont {
+  font-size: var(--large-font-size);
+}
+
+.Uppercase {
+  text-transform: uppercase;
+}
+
+/*
+  Material-UI Augmentations
+
+  Inline styles are the worst..
+*/
+
+.Button {
+  color: var(--secondary) !important;
+}
+
+.Button.-Primary > label {
+  background: var(--secondary) !important;
+  color: #fff !important;
+}
+
+.Button.-Secondary > label {
+  background: #fff !important;
+  color: var(--secondary) !important;
+}
+
+.Button.-Primary path {
+  fill: var(--secondary) !important;
+}
+
+.Button.-Small > div > span {
+  font-size: var(--small-font-size) !important;
+}
+
+.Button.-Subtle {
+  color: var(--muted) !important;
+}
+
+.DropDownMenu.-Compact button + div {
+  display: none !important;
+}
+
+.ListItem.-Compact {
+  line-height: 0 !important;
+  padding-left: 50px !important;
+}
+
+.ListItem.-Emphasis {
+  font-style: italic;
+}
+
+/* list item checkbox */
+.ListItem.-Compact > div {
+  top: 3px !important;
+}
+
+.RightAlignedCell {
+  text-align: right !important;
+}
+
+.MuiTable * {
+  padding-left: 7px !important;
+  padding-right: 7px !important;
+  font-size: var(--medium-font-size) !important;
+  text-overflow: unset !important;
+}
+
+.MuiTable th {
+  color: var(--muted) !important;
+  font-weight: var(--medium-weight) !important;
+  height: 48px !important;
+}
+
+.DialogCloseButton {
+  text-align: right !important;
+  padding: 0px !important;
+}
+
+.DialogCloseButton svg {
+  color: var(--light) !important;
+}
+
+/* Get rid of the border between title and body */
+.DialogCloseButton + div {
+  border-top: unset !important;
+  border-bottom: unset !important;
+}

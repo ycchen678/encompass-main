@@ -1,0 +1,43 @@
+{
+  "title": "POSTGeocodeResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Response shape for POST /api/geocode/",
+  "type": "array",
+  "definitions": {
+    "success": {
+      "properties": {
+        "status": {
+          "enum": ["success"]
+        },
+        "lat": {
+          "type": "number"
+        },
+        "lng": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false,
+      "required": ["status", "lat", "lng"]
+    },
+    "error": {
+      "properties": {
+        "status": {
+          "enum": ["error"]
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": ["status", "message"]
+    }
+  },
+  "items": {
+    "oneOf": [{
+      "$ref": "#/definitions/success"
+    }, {
+      "$ref": "#/definitions/error"
+    }]
+  },
+  "additionalProperties": false
+}

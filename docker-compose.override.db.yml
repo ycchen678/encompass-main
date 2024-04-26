@@ -1,0 +1,30 @@
+version: "2"
+
+volumes:
+  postgres-data:
+    driver: local
+
+services:
+
+    backend:
+      depends_on:
+        - db
+      links:
+        # Link with the DB container as `db.local`.
+        - db:db.local
+      volumes:
+        - ./backend/config/entrypoint-local.sh:/entrypoint.sh:ro
+      environment:
+        - POSTGRES_URL=postgres://postgres:example@db.local:5432/network_adequacy
+        - POSTGRES_URL_POSTGRES=postgres://postgres:example@db.local:5432/postgres
+
+    db:
+      image: mdillon/postgis
+      ports:
+        # Expose port for convenient local access.
+        - 5432:5432
+      volumes:
+        - postgres-data:/var/lib/postgresql/data
+      environment:
+        POSTGRES_PASSWORD: example
+        POSTGRES_DB: network_adequacy

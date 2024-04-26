@@ -1,0 +1,16 @@
+@import "../../index.css";
+
+.CSVUploader input[type="file"] {
+  display: none;
+  margin: auto;
+}
+
+.CSVUploader {
+  width: 190px;
+  text-align: left !important;
+}
+
+.CSVUploader .Button {
+  color: var(--primary-dark);
+  margin: auto;
+}

@@ -1,0 +1,18 @@
+@import "../../index.css";
+
+.AnalyticsDrawer .Description {
+  position: relative;
+}
+
+.AnalyticsDrawer .Description > h4 {
+  width: var(--analytics-title-width);
+  display: inline-block;
+  vertical-align: top;
+}
+
+.AnalyticsDrawer .Description > div {
+  padding: 0 0 0 24px;
+  position: relative;
+  display: inline-block;
+  width: calc(100% - var(--analytics-title-width) - 24px);
+}

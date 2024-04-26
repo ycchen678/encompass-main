@@ -1,0 +1,69 @@
+{
+  "title": "POSTRepresentativePointsResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Response shape for POST /api/representative_points/",
+  "definitions": {
+    "bucket": {
+      "items": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "values": {
+            "items": {
+            "type": "number"
+          },
+            "type": "array"
+          }
+        },
+        "additionalProperties": false,
+        "required": ["name", "values"]
+      },
+      "type": "array"
+    }
+  },
+  "type": "array",
+  "items": {
+    "properties": {
+      "county": {
+        "type": "string"
+      },
+      "demographics": {
+        "type": "array",
+        "items": {
+          "properties": {
+            "buckets": {
+              "$ref": "#/definitions/bucket"
+            },
+            "category": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["buckets", "category"]
+        }
+      },
+      "id": {
+        "type": "integer"
+      },
+      "lat": {
+        "type": "number"
+      },
+      "lng": {
+        "type": "number"
+      },
+      "population": {
+        "type": "integer"
+      },
+      "service_area_id": {
+        "type": "string"
+      },
+      "zip": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": ["census_tract", "county", "id", "lat", "lng", "population", "service_area_id", "zip"]
+  },
+  "additionalProperties": false
+}

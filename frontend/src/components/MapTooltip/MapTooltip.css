@@ -1,0 +1,41 @@
+@import "../../index.css";
+
+:root {
+  --background: rgba(0, 0, 0, .8);
+  --text: rgba(255, 255, 255, .8);
+}
+
+.MapTooltip .mapboxgl-popup-content {
+  background-color: var(--background);
+}
+
+.MapTooltip .mapboxgl-popup-tip {
+  border-top-color: var(--background) !important;
+}
+
+.MapTooltip table {
+  font-size: var(--medium-font-size);
+  color: var(--text);
+}
+
+.MapTooltip td {
+  padding: 0 10px;
+}
+
+.MapTooltip a {
+  font-weight: var(--medium-weight) !important;
+  color: var(--text);
+}
+
+.MapTooltip tr :first-child {
+  font-weight: var(--heavy-weight);
+}
+
+.MapTooltip .controls  {
+   font-size: var(--medium-font-size);
+   color: var(--text);
+ }
+
+ .MapTooltip .icon-button {
+   color: var(--text) !important;
+ }

@@ -1,0 +1,24 @@
+@import "../../index.css";
+
+  .Selectors {
+    margin: 0px 0 30px;
+  }
+
+  .Selectors .Menu {
+    font: var(--font) !important;
+    vertical-align: bottom;
+    height: 40px !important;
+  }
+  
+  .Selectors h4 {
+    width: var(--analytics-title-width);
+    vertical-align: middle !important;
+  }
+  
+  .SelectorRow * {
+    display: inline-block !important;
+  }
+
+.Menu.MultiSelect > div > div + div {
+  width: 55% !important;
+}
